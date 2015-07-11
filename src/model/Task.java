@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.layout.Priority;
+
 import java.util.Date;
 
 /**
@@ -14,7 +15,7 @@ public class Task
         it would be good to use some of the Java 1.8 functions that were added. I'll look
         more into it. For now I provided some basic functions.
      */
-    private long id;
+    private long id = 0;
     private String name;
     private String content;
     private Label label;
@@ -28,8 +29,8 @@ public class Task
        due date we can set a value of null. This can
        denote no due date and is easy to check.
      */
-    public Task(long id, String name, String content,Label label,Date reminder, Date due_at,Date created_at, Date updated_at,Priority priority){
-        this.id = id;
+    public Task( String name, String content,Label label,Date reminder, Date due_at,Date created_at, Date updated_at,Priority priority){
+        id++;
         this.name = name;
         this.content = content;
         this.label = label;
