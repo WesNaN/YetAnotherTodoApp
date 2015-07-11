@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDateTime;
+import javafx.scene.layout.Priority;
 import java.util.Date;
 
 /**
@@ -14,35 +14,41 @@ public class Task
         it would be good to use some of the Java 1.8 functions that were added. I'll look
         more into it. For now I provided some basic functions.
      */
-    private int id;
-    private String title;
+    private long id;
+    private String name;
     private String content;
+    private Label label;
+    private Date reminder;
     private Date due_at;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
+    private Priority priority;
     /* All variables are defined in the Constructor.
        All variables must be defined however if there is no
        due date we can set a value of null. This can
        denote no due date and is easy to check.
      */
-    public Task(int id, String title, String content, Date due_at,LocalDateTime created_at, LocalDateTime updated_at){
+    public Task(long id, String name, String content,Label label,Date reminder, Date due_at,Date created_at, Date updated_at,Priority priority){
         this.id = id;
-        this.title = title;
+        this.name = name;
         this.content = content;
+        this.label = label;
+        this.reminder = reminder;
         this.due_at = due_at;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.priority = priority;
     }
     //Helper function to get id.
-    private int getId(){
+    private long getId(){
         return id;
     }
 
     /*
         Basic class to set Task title;
      */
-    private void setTitle(String title){
-        this.title = title;
+    private void setName(String name){
+        this.title = name;
     }
 
     /*
