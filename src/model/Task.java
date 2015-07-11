@@ -15,7 +15,7 @@ public class Task
         it would be good to use some of the Java 1.8 functions that were added. I'll look
         more into it. For now I provided some basic functions.
      */
-    private long id = 0;
+    private static long id = 0;
     private String name;
     private String content;
     private Label label;
@@ -41,7 +41,7 @@ public class Task
         this.priority = priority;
     }
     //Helper function to get id.
-    private long getId(){
+    public long getId(){
         return id;
     }
 
