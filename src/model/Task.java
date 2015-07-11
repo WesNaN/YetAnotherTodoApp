@@ -20,8 +20,8 @@ public class Task
     private Label label;
     private Date reminder;
     private Date due_at;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private Date created_at;
+    private Date updated_at;
     private Priority priority;
     /* All variables are defined in the Constructor.
        All variables must be defined however if there is no
@@ -48,7 +48,7 @@ public class Task
         Basic class to set Task title;
      */
     private void setName(String name){
-        this.title = name;
+        this.name = name;
     }
 
     /*
