@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  *  This class is a representation of a real word "task" entity.
  */
-
+@Deprecated
 public class Task
 {
     /*
