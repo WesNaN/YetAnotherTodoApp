@@ -8,13 +8,12 @@ import java.util.ArrayList;
 
 public class Project
 {
-    /**
-     *  This String is a name of a project
-     */
-    String name;
+    private static int id = 0;
+    private String name;
+    private ArrayList<Task> tasks = new ArrayList<>();
 
-    /**
-     *  This {@link java.util.ArrayList} stores tasks in this project
-     */
-    ArrayList<Task> tasks = new ArrayList<>();
+    public Project()
+    {
+        id++;
+    }
 }
