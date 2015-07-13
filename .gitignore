@@ -3,3 +3,4 @@
 out/
 *.jar
 test.db
+H2DB/H2/
