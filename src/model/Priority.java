@@ -6,6 +6,7 @@ package model;
  *
  */
 
+@Deprecated
 public enum Priority
 {
     URGENT(2), ASAP(3), ANYTIME(0), NOTURGENT(1);

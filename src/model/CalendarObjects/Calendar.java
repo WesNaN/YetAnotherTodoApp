@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Calendar {
 
-    private static int id = 0; //do we get this from DB?
+    private static int id = 0;
     private String name;
     private String ColorCode; //chosen colorcode for this calendar
     private List<Task> tasks = new ArrayList<>();

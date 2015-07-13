@@ -1,8 +1,6 @@
 package model.CalendarObjects;
 
 import model.Label;
-import model.Priority;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +15,11 @@ public class Task {
     private String title;
     private String description;
     private String location; //maybe coordinates from google maps?
-    private String attendants;
     private Label label;
-    LocalDateTime reminder; //make this a separate object x min before due? List for more than one reminder?
-    LocalDateTime due;
-    List<LocalDateTime> LastEdit = new ArrayList<>(); //first = created
-    private Priority priority;
+    private List<LocalDateTime> reminders; //make this a separate object x min before due? List for more than one reminders?
+    private LocalDateTime due;
+    private List<LocalDateTime> lastEdit = new ArrayList<>(); //first = created
+    private int priority;
 
     /* All variables are defined in the Constructor.
        All variables must be defined however if there is no
@@ -30,18 +27,16 @@ public class Task {
        denote no due date and is easy to check.
      */
 
-    public Task(String title, String description, String location, String attendants, Label label, LocalDateTime reminder, LocalDateTime due, Priority priority) {
+    public Task(String title, String description, String location, String attendants, Label label, List<LocalDateTime> reminders, LocalDateTime due, int priority) {
         this.title = title;
         this.description = description;
         this.location = location;
-        this.attendants = attendants;
         this.label = label;
-        this.reminder = reminder;
+        this.reminders = reminders;
         this.due = due;
-        LastEdit.add(LocalDateTime.now());
+        lastEdit.add(LocalDateTime.now());
         this.priority = priority;
         this.id = idCounter++; //get id from DB?
-        updateOrAddInDB();
     }
 
     /**
@@ -63,14 +58,11 @@ public class Task {
     public void setLocation(String location) {
         this.location = location;
     }
-    public String getAttendants() {
-        return attendants;
-    }
     public Label getLabel() {
         return label;
     }
-    public LocalDateTime getReminder() {
-        return reminder;
+    public List<LocalDateTime> getReminders() {
+        return reminders;
     }
     public LocalDateTime getDue() {
         return due;
@@ -78,10 +70,10 @@ public class Task {
     public void setDue(LocalDateTime due) {
         this.due = due;
     }
-    public List<LocalDateTime> getLastEdits() {
-        return LastEdit;
+    public List<LocalDateTime> getlastEdits() {
+        return lastEdit;
     }
-    public Priority getPriority() {
+    public int getint() {
         return priority;
     }
 
@@ -93,29 +85,19 @@ public class Task {
      * @param location
      * @param attendants
      * @param label
-     * @param reminder
+     * @param reminders
      * @param due
      * @param priority
      */
-    public void updateTask(String title, String description, String location, String attendants, Label label, LocalDateTime reminder, LocalDateTime due, Priority priority) {
+    public void updateTask(String title, String description, String location, String attendants, Label label, List<LocalDateTime> reminders, LocalDateTime due, int priority) {
         this.title = title;
         this.description = description;
         this.location = location;
-        this.attendants = attendants;
         this.label = label;
-        this.reminder = reminder;
+        this.reminders = reminders;
         this.due = due;
         this.priority = priority;
-        LastEdit.add(LocalDateTime.now());
-
-        updateOrAddInDB();
-    }
-
-    /**
-     * This will update Task in DB
-     */
-    private void updateOrAddInDB() {
-
+        lastEdit.add(LocalDateTime.now());
     }
 
     /**
