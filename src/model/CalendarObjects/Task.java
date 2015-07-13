@@ -10,8 +10,7 @@ import java.util.List;
  */
 public class Task {
 
-    private final int id;
-    private static int idCounter =0;
+    private static int id = 0;
     private String title;
     private String description;
     private String location; //maybe coordinates from google maps?
@@ -36,7 +35,6 @@ public class Task {
         this.due = due;
         lastEdit.add(LocalDateTime.now());
         this.priority = priority;
-        this.id = idCounter++; //get id from DB?
     }
 
     /**
