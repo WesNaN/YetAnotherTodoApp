@@ -44,9 +44,6 @@ public final class Task { //todo change name to event?
      * Getters
      * @return
      */
-    public int getId() {
-        return id;
-    }
     public String getTitle() {
         return title;
     }
@@ -89,28 +86,29 @@ public final class Task { //todo change name to event?
         Ownerid = ownerid;
     }
 
-
-    /**
-     * Method for updating Task
-     * Maybe not needed when DB is up and running?
-     * @param title
-     * @param description
-     * @param location
-     * @param attendants
-     * @param label
-     * @param reminders
-     * @param due
-     * @param priority
-     */
-    public void updateTask(String title, String description, String location, String attendants, Label label, List<LocalDateTime> reminders, LocalDateTime due, int priority) {
+    public void setTitle(String title)
+    {
         this.title = title;
+    }
+    public void setDescription(String description)
+    {
         this.description = description;
-        this.location = location;
+    }
+    public void setLabel(Label label)
+    {
         this.label = label;
+    }
+    public void setReminders(List<LocalDateTime> reminders)
+    {
         this.reminders = reminders;
-        this.due = due;
+    }
+    public void setLastEdit(LocalDateTime lastEdit)
+    {
+        this.lastEdit = lastEdit;
+    }
+    public void setPriority(int priority)
+    {
         this.priority = priority;
-        lastEdit = LocalDateTime.now();
     }
 
     /**
