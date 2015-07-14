@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * A repo has issues that can be grouped into Milestones. Milestones have a due date.
  */
 public final class Repository extends BaseIssue {
-    
+
     private Color color; //colorcode when shown in gui
     private LocalDate projectStart;
     private LocalDate projectEnd;

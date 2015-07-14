@@ -11,10 +11,8 @@ abstract class BaseIssue {
     short DBMaxDescriptionlength = 500; //todo: get from db
 
     public BaseIssue(String name, String description) {
-        if (description.length() > DBMaxDescriptionlength)
-            throw new IllegalArgumentException("description is to long currently: " + description.length() + " characters. But needs to be under " + DBMaxDescriptionlength);
         this.name = name;
-        this.description = description;
+        setDescription(description);
     }
 
     public int getId() {
@@ -35,6 +33,8 @@ abstract class BaseIssue {
         return description;
     }
     public void setDescription(String description) {
+        if (description.length() > DBMaxDescriptionlength)
+            throw new IllegalArgumentException("description is to long currently: " + description.length() + " characters. But needs to be under " + DBMaxDescriptionlength);
         this.description = description;
     }
 
