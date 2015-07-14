@@ -1,9 +1,9 @@
 package service.database;
 
 import model.CalendarObjects.Calendar;
+import model.CalendarObjects.Task;
 import model.Label;
 import model.Project;
-import model.CalendarObjects.Task;
 import org.h2.tools.RunScript;
 import service.ConnectionError;
 import service.DataService;
@@ -13,23 +13,19 @@ import java.io.FileReader;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This class handles database connection.
+ */
 public class DatabaseService implements DataService
 {
     private String user = "user";
     private String pass = "pass";
     private String DBname = user + "DB";
 
-    private AddToDB addToDBFunctions;
-    /**
-     * This class handles database connection.
-     */
-
     Connection DBconnection = null;
-    private static final Logger LOGGER = Logger.getLogger(
-            Thread.currentThread().getStackTrace()[0].getClassName());
+    private static final Logger LOGGER = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
 
     public DatabaseService() throws ConnectionError
     {
@@ -37,7 +33,6 @@ public class DatabaseService implements DataService
         prepareDatabase(); //todo: only if database is not present or new user\pass
        // testDatabase();
 
-        addToDBFunctions = new AddToDB(getDBconnection());
     }
 
     private void connect() throws ConnectionError
@@ -57,18 +52,6 @@ public class DatabaseService implements DataService
             LOGGER.warning("Cannot establish connection!");
             throw new ConnectionError(null, e);
         }
-    }
-
-    Connection getDBconnection() throws ConnectionError {
-        if (DBconnection == null) {
-            try {
-                connect();
-            } catch (ConnectionError connectionError) {
-                LOGGER.log(Level.SEVERE, "Failed opening connection to DB", connectionError);
-                throw new NullPointerException("DBconnection is null");
-            }
-        }
-        return DBconnection;
     }
 
     @Override
