@@ -11,6 +11,7 @@ import java.util.List;
 public final class Task { //todo change name to event?
 
     private static int id = 0;
+    private int taskId;
     private String title;
     private String description;
     private String location; //maybe coordinates from google maps?
@@ -26,7 +27,7 @@ public final class Task { //todo change name to event?
        denote no due date and is easy to check.
      */
 
-    public Task(String title, String description, String location, String attendants, Label label, List<LocalDateTime> reminders, LocalDateTime due, int priority) {
+    public Task(String title, String description, String location, Label label, List<LocalDateTime> reminders, LocalDateTime due, int priority) {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -35,6 +36,7 @@ public final class Task { //todo change name to event?
         this.due = due;
         lastEdit = LocalDateTime.now();
         this.priority = priority;
+        taskId = id++;
     }
 
     /**
@@ -49,6 +51,10 @@ public final class Task { //todo change name to event?
     }
     public String getDescription() {
         return description;
+    }
+    public int getPriority()
+    {
+        return priority;
     }
     public String getLocation() {
         return location;
@@ -71,8 +77,9 @@ public final class Task { //todo change name to event?
     public LocalDateTime getlastEdit() {
         return lastEdit;
     }
-    public int getint() {
-        return priority;
+    public int getTaskId()
+    {
+        return taskId;
     }
 
     /**

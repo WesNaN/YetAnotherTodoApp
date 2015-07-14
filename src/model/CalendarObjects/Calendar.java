@@ -12,12 +12,33 @@ import java.util.List;
 public final class Calendar {
 
     private static int id = 0;
+    private int calendarId;
     private String name;
     private Color color; //chosen colorcode for this calendar
     private List<Task> tasks = new ArrayList<>();
 
     public Calendar()
     {
-        id++;
+        calendarId = id++;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public Color getColor()
+    {
+        return color;
+    }
+
+    public List<Task> getTasks()
+    {
+        return tasks;
+    }
+
+    public int getCalendarId()
+    {
+        return calendarId;
     }
 }
