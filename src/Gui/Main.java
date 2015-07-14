@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Created by steinar on 13.07.2015.
+ * Placeholder for Mainmethod for gui
  */
 public class Main extends Application{
 

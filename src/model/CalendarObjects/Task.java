@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Task Object
+ * Task Object describes when, what and where a event is
  */
-public class Task {
+public final class Task { //todo change name to event?
 
     private static int id = 0;
     private String title;
@@ -17,7 +17,7 @@ public class Task {
     private Label label;
     private List<LocalDateTime> reminders; //make this a separate object x min before due? List for more than one reminders?
     private LocalDateTime due;
-    private List<LocalDateTime> lastEdit = new ArrayList<>(); //first = created
+    private LocalDateTime lastEdit; //first = created
     private int priority;
 
     /* All variables are defined in the Constructor.
@@ -33,7 +33,7 @@ public class Task {
         this.label = label;
         this.reminders = reminders;
         this.due = due;
-        lastEdit.add(LocalDateTime.now());
+        lastEdit = LocalDateTime.now();
         this.priority = priority;
     }
 
@@ -68,7 +68,7 @@ public class Task {
     public void setDue(LocalDateTime due) {
         this.due = due;
     }
-    public List<LocalDateTime> getlastEdits() {
+    public LocalDateTime getlastEdit() {
         return lastEdit;
     }
     public int getint() {
@@ -95,7 +95,7 @@ public class Task {
         this.reminders = reminders;
         this.due = due;
         this.priority = priority;
-        lastEdit.add(LocalDateTime.now());
+        lastEdit = LocalDateTime.now();
     }
 
     /**
