@@ -5,6 +5,7 @@ import model.CalendarObjects.Task;
 import model.Label;
 import model.Project;
 import service.ConnectionError;
+import service.database.DatabaseConnectionFactory;
 import service.database.DatabaseService;
 
 import java.time.LocalDateTime;
@@ -14,10 +15,7 @@ public class Test1
 {
     public static void main(String args[]) throws ConnectionError
     {
-        System.out.println("Test");
-
-        DatabaseService service = new DatabaseService();
-
+        DatabaseService service = new DatabaseService(DatabaseConnectionFactory.getConnection("test", "sa", "sa"));
 
         ArrayList<LocalDateTime> reminders = new ArrayList<>();
         reminders.add(LocalDateTime.now().plusDays(1));
