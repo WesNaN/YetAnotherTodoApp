@@ -2,20 +2,30 @@ package model;
 
 import java.util.ArrayList;
 
-/**
- *  This class creates collection gather under a {@link #name}
- *
- *  renamed to Calendar
- */
-@Deprecated
 public class Project
 {
     private static int id = 0;
+    private int projectId;
     private String name;
     private ArrayList<Task> tasks = new ArrayList<>();
 
     public Project()
     {
-        id++;
+        projectId = id++;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public ArrayList<Task> getTasks()
+    {
+        return tasks;
+    }
+
+    public int getProjectId()
+    {
+        return projectId;
     }
 }

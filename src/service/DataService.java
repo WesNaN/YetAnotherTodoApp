@@ -1,8 +1,9 @@
 package service;
 
+import model.CalendarObjects.Calendar;
 import model.Label;
 import model.Project;
-import model.Task;
+import model.CalendarObjects.Task;
 
 public interface DataService
 {
@@ -14,7 +15,7 @@ public interface DataService
       * @param task is an instance of {@link model.Task}
       * @throws ConnectionError
       */
-     void addTask(Task task) throws ConnectionError;
+     void addTask(Task task, Calendar calendar, Project project) throws ConnectionError;
 
      /**
       *
@@ -38,22 +39,40 @@ public interface DataService
       * @throws ConnectionError
       */
      void addProject(Project project) throws ConnectionError;
+
      /**
       *
       * @param project is an instance of {@link model.Project}
       * @throws ConnectionError
       */
      void removeProject(Project project) throws ConnectionError;
+
      /**
       *
       * @param label is an instance of {@link model.Label}
       * @throws ConnectionError
       */
      void addLabel(Label label) throws ConnectionError;
+
      /**
       *
       * @param label is an instance of {@link model.Label}
       * @throws ConnectionError
       */
      void removeLabel(Label label) throws ConnectionError;
+
+     /**
+      *
+      * @param calendar
+      * @throws ConnectionError
+      */
+     void addCalendar(Calendar calendar) throws ConnectionError;
+
+     /**
+      *
+      * @param calendar
+      * @throws ConnectionError
+      */
+     void removeCalendar(Calendar calendar) throws ConnectionError;
+
 }
