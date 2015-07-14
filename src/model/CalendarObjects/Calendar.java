@@ -11,7 +11,7 @@ import java.util.List;
  */
 public final class Calendar {
 
-    private static int id = 0;
+    private static int id = 0; //todo get from DB
     private int calendarId;
     private String name;
     private Color color; //chosen colorcode for this calendar

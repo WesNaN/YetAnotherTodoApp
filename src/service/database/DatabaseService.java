@@ -13,31 +13,39 @@ import java.io.FileReader;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DatabaseService implements DataService
 {
+    private String user = "user";
+    private String pass = "pass";
+    private String DBname = user + "DB";
+
+    private AddToDB addToDBFunctions;
     /**
      * This class handles database connection.
      */
 
-    Connection con = null;
+    Connection DBconnection = null;
     private static final Logger LOGGER = Logger.getLogger(
             Thread.currentThread().getStackTrace()[0].getClassName());
 
     public DatabaseService() throws ConnectionError
     {
         connect();
-        prepareDatabase();
-//        testDatabase();
+        prepareDatabase(); //todo: only if database is not present or new user\pass
+       // testDatabase();
+
+        addToDBFunctions = new AddToDB(getDBconnection());
     }
 
-    public void connect() throws ConnectionError
+    private void connect() throws ConnectionError
     {
         try
         {
             Class.forName("org.h2.Driver");
-            con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
+            DBconnection = DriverManager.getConnection("jdbc:h2:~/" + DBname, user, pass);
         }
         catch (ClassNotFoundException e)
         {
@@ -51,6 +59,18 @@ public class DatabaseService implements DataService
         }
     }
 
+    Connection getDBconnection() throws ConnectionError {
+        if (DBconnection == null) {
+            try {
+                connect();
+            } catch (ConnectionError connectionError) {
+                LOGGER.log(Level.SEVERE, "Failed opening connection to DB", connectionError);
+                throw new NullPointerException("DBconnection is null");
+            }
+        }
+        return DBconnection;
+    }
+
     @Override
     public void addTask(Task task, Calendar calendar, Project project) throws ConnectionError
     {
@@ -58,7 +78,7 @@ public class DatabaseService implements DataService
 
         try
         {
-            stmt = con.prepareStatement("INSERT INTO Tasks(id, title, description, priority, label, due, project_id, calendar_id) " +
+            stmt = DBconnection.prepareStatement("INSERT INTO Tasks(id, title, description, priority, label, due, project_id, calendar_id) " +
                     "VALUES (?,?,?,?,?,?,?,?);");
 
             stmt.setInt(1, task.getTaskId());
@@ -96,7 +116,7 @@ public class DatabaseService implements DataService
         PreparedStatement stmt = null;
         try
         {
-            stmt = con.prepareStatement("INSERT INTO Projects(id, name) VALUES (?,?)");
+            stmt = DBconnection.prepareStatement("INSERT INTO Projects(id, name) VALUES (?,?)");
             stmt.setInt(1, project.getProjectId());
             stmt.setString(2, project.getName());
             stmt.executeUpdate();
@@ -131,7 +151,7 @@ public class DatabaseService implements DataService
         PreparedStatement stmt = null;
         try
         {
-            stmt = con.prepareStatement("INSERT INTO Calendars(id, name) VALUES (?,?)");
+            stmt = DBconnection.prepareStatement("INSERT INTO Calendars(id, name) VALUES (?,?)");
             stmt.setInt(1, calendar.getCalendarId());
             stmt.setString(2, calendar.getName());
             stmt.executeUpdate();
@@ -154,7 +174,7 @@ public class DatabaseService implements DataService
         try
         {
             URL url = getClass().getResource("prepare_database.sql");
-            RunScript.execute(con, new FileReader(url.getPath()));
+            RunScript.execute(DBconnection, new FileReader(url.getPath()));
         }
         catch (SQLException e)
         {
@@ -173,17 +193,17 @@ public class DatabaseService implements DataService
         PreparedStatement stmt = null;
         try
         {
-            stmt = con.prepareStatement("INSERT INTO Projects(id, name) VALUES (?,?)");
+            stmt = DBconnection.prepareStatement("INSERT INTO Projects(id, name) VALUES (?,?)");
             stmt.setInt(1, 32);
             stmt.setString(2, "Project1");
             stmt.executeUpdate();
 
-            stmt = con.prepareStatement("INSERT INTO Calendars(id, name) VALUES (?,?)");
+            stmt = DBconnection.prepareStatement("INSERT INTO Calendars(id, name) VALUES (?,?)");
             stmt.setInt(1, 23);
             stmt.setString(2, "Calendar1");
             stmt.executeUpdate();
 
-            stmt = con.prepareStatement("INSERT INTO Tasks(id, title, description, priority, label, due, project_id, calendar_id) " +
+            stmt = DBconnection.prepareStatement("INSERT INTO Tasks(id, title, description, priority, label, due, project_id, calendar_id) " +
                     "VALUES (?,?,?,?,?,?,?,?);");
             stmt.setInt(1, 1);
             stmt.setString(2, "Dishes");
@@ -195,7 +215,7 @@ public class DatabaseService implements DataService
             stmt.setInt(8, 23);
             stmt.executeUpdate();
 
-            stmt = con.prepareStatement("INSERT INTO Tasks(id, title, description, priority, label, due, project_id, calendar_id) " +
+            stmt = DBconnection.prepareStatement("INSERT INTO Tasks(id, title, description, priority, label, due, project_id, calendar_id) " +
                     "VALUES (?,?,?,?,?,?,?,?);");
 
             stmt.setInt(1, 2);
@@ -208,7 +228,7 @@ public class DatabaseService implements DataService
             stmt.setInt(8, 23);
             stmt.executeUpdate();
 
-            stmt = con.prepareStatement("SELECT * FROM Tasks");
+            stmt = DBconnection.prepareStatement("SELECT * FROM Tasks");
             ResultSet set = stmt.executeQuery();
 
             while (set.next())

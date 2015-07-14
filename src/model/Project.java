@@ -2,9 +2,10 @@ package model;
 
 import java.util.ArrayList;
 
+@Deprecated //by Repository
 public class Project
 {
-    private static int id = 0;
+    private static int id = 1;
     private int projectId;
     private String name;
     private ArrayList<Task> tasks = new ArrayList<>();

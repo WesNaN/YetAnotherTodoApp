@@ -1,8 +1,8 @@
 package model.CalendarObjects;
 
 import model.Label;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,8 +18,9 @@ public final class Task { //todo change name to event?
     private Label label;
     private List<LocalDateTime> reminders; //make this a separate object x min before due? List for more than one reminders?
     private LocalDateTime due;
-    private LocalDateTime lastEdit; //first = created
+    private LocalDateTime lastEdit;
     private int priority;
+    private int Ownerid; //id to the calendar that owns this task
 
     /* All variables are defined in the Constructor.
        All variables must be defined however if there is no
@@ -81,6 +82,13 @@ public final class Task { //todo change name to event?
     {
         return taskId;
     }
+    public int getOwnerid() {
+        return Ownerid;
+    }
+    public void setOwnerid(int ownerid) {
+        Ownerid = ownerid;
+    }
+
 
     /**
      * Method for updating Task
