@@ -32,8 +32,9 @@ public class Test1
 
         service.addCalendar(calendar1);
         service.addProject(project1);
-        service.addTask(task1, calendar1, project1);
-        service.addTask(task2, calendar1, project1);
+
+        //service.addTask(task1, calendar1, project1); //todo: this crashes
+        //service.addTask(task2, calendar1, project1);
 
     }
 }

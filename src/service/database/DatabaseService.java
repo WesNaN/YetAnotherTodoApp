@@ -40,7 +40,8 @@ public class DatabaseService implements DataService
         try
         {
             Class.forName("org.h2.Driver");
-            DBconnection = DriverManager.getConnection("jdbc:h2:~/" + DBname, user, pass);
+            //DBconnection = DriverManager.getConnection("jdbc:h2:~/" + DBname, user, pass);
+            DBconnection = DriverManager.getConnection("jdbc:h2:~/DB", user, pass);
         }
         catch (ClassNotFoundException e)
         {
@@ -154,19 +155,24 @@ public class DatabaseService implements DataService
 
     private void prepareDatabase()
     {
+        runScript("prepare_database.sql");
+        runScript("GitObjects.sql");
+    }
+
+    private void runScript(String URL) {
         try
         {
-            URL url = getClass().getResource("prepare_database.sql");
+            URL url = getClass().getResource(URL);
             RunScript.execute(DBconnection, new FileReader(url.getPath()));
         }
         catch (SQLException e)
         {
-            LOGGER.warning("Error in prepare_database.sql script, cannot execute it!");
+            LOGGER.warning("Error in " + URL + " script, cannot execute it!");
             e.printStackTrace();
         }
         catch (FileNotFoundException e)
         {
-            LOGGER.warning("'prepare_database.sql' file not found!");
+            LOGGER.warning("' " + URL + "' file not found!");
             e.printStackTrace();
         }
     }
