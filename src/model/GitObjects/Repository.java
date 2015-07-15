@@ -22,4 +22,26 @@ public final class Repository extends BaseIssue {
         this.projectStart = projectStart;
         this.projectEnd = projectEnd;
     }
+
+    public Color getColor() {
+        return color;
+    }
+    public void changeColor(Color color) {
+        this.color = color;
+    }
+
+    /**
+     * we should not change startdate after we create object
+     * therefore no setProjectStart method provided
+     * @return
+     */
+    public LocalDate getProjectStart() {
+        return projectStart;
+    }
+    public LocalDate getProjectEnd() {
+        return projectEnd;
+    }
+    public void setProjectEnd(LocalDate projectEnd) {
+        this.projectEnd = projectEnd;
+    }
 }

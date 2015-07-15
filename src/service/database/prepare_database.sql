@@ -22,7 +22,7 @@ CREATE TABLE Tasks
 (
   id          INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   title       VARCHAR(255)                   NOT NULL,
-  description VARCHAR(500),
+  description VARCHAR(500)                   NOT NULL,
   location    VARCHAR(200),
   label       VARCHAR(255),
   due         TIMESTAMP,
@@ -38,16 +38,9 @@ CREATE TABLE Reminders
   reminder TIMESTAMP
 );
 
-
 CREATE TABLE LastEdits
 (
   id       INT AUTO_INCREMENT NOT NULL,
   task_id  INT                NOT NULL REFERENCES Tasks (id),
   reminder TIMESTAMP
 );
-
-
-
-
-
-
