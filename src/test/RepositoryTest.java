@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import static org.junit.Assert.assertEquals;
 
 /**
- * RepositoryClass tests
+ * RepositoryClass unit tests
  */
 public class RepositoryTest {
     private Repository repository;

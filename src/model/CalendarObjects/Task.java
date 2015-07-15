@@ -10,8 +10,7 @@ import java.util.List;
  */
 public final class Task { //todo change name to event?
 
-    private static int id = 0;
-    private int taskId;
+    private int taskId = 0; //todo: get from DB
     private String title;
     private String description;
     private String location; //maybe coordinates from google maps?
@@ -20,7 +19,7 @@ public final class Task { //todo change name to event?
     private LocalDateTime due;
     private LocalDateTime lastEdit;
     private int priority;
-    private int Ownerid; //id to the calendar that owns this task
+    private final int ownerId; //id to the calendar that owns this task
 
     /* All variables are defined in the Constructor.
        All variables must be defined however if there is no
@@ -28,7 +27,7 @@ public final class Task { //todo change name to event?
        denote no due date and is easy to check.
      */
 
-    public Task(String title, String description, String location, Label label, List<LocalDateTime> reminders, LocalDateTime due, int priority) {
+    public Task(String title, String description, String location, Label label, List<LocalDateTime> reminders, LocalDateTime due, int priority, int ownerId) {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -37,7 +36,7 @@ public final class Task { //todo change name to event?
         this.due = due;
         lastEdit = LocalDateTime.now();
         this.priority = priority;
-        taskId = id++;
+        this.ownerId = ownerId;
     }
 
     /**
@@ -80,10 +79,7 @@ public final class Task { //todo change name to event?
         return taskId;
     }
     public int getOwnerid() {
-        return Ownerid;
-    }
-    public void setOwnerid(int ownerid) {
-        Ownerid = ownerid;
+        return ownerId;
     }
 
     public void setTitle(String title)

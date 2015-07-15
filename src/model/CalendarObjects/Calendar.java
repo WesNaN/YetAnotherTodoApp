@@ -11,32 +11,38 @@ import java.util.List;
  */
 public final class Calendar {
 
-    private static int id = 0; //todo get from DB
-    private int calendarId;
+    private int calendarId = 0;
     private String name;
-    private Color color; //chosen colorcode for this calendar
+    private Color color; //chosen colorcode for this calendar //todo: generate a color thats not in usesomewhere
     private List<Task> tasks = new ArrayList<>();
 
-    public Calendar()
-    {
-        calendarId = id++;
+    public Calendar(String name, Color color) {
+        this.name = name;
+        this.color = color;
+        //TODO: Decide if we want to insert intoDB here or not (DB generates id)
+    }
+    public Calendar(String name) {
+        this(name, Color.AQUA);
+    }
+
+    public void setID(int id) {
+        if (calendarId != 0)
+            throw new IllegalAccessError("you can only set id for a calendar once!");
+        calendarId = id;
     }
 
     public String getName()
     {
         return name;
     }
-
     public Color getColor()
     {
         return color;
     }
-
     public List<Task> getTasks()
     {
         return tasks;
     }
-
     public int getCalendarId()
     {
         return calendarId;

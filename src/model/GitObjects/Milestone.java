@@ -18,6 +18,14 @@ public final class Milestone extends BaseIssue {
         this.assignedIssues = assignedIssues;
     }
 
+    public LocalDate getPlannedFinnish() {
+        return plannedFinnish;
+    }
+    public void setPlannedFinnish(LocalDate plannedFinnish) {
+        this.plannedFinnish = plannedFinnish;
+    }
+
+
     public byte percentDone() {
         long doneIssues = assignedIssues.stream()
                                         .map(Issue::isFinished)

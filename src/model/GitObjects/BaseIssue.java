@@ -5,7 +5,7 @@ package model.GitObjects;
  */
 abstract class BaseIssue {
 
-    private int id; //todo: get from DB.
+    private int id = 0; //todo: get from DB.
     private String name;
     private String description;
     short DBMaxDescriptionlength = 500; //todo: get from db
@@ -19,6 +19,8 @@ abstract class BaseIssue {
         return id;
     }
     public void setId(int id) {
+        if (id != 0)
+            throw new IllegalAccessError("you can only set id once!");
         this.id = id;
     }
 

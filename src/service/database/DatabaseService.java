@@ -206,22 +206,38 @@ public class DatabaseService implements DataService
         }
     }
 
+    /**
+     * function to insert new Calendarobject into DB.
+     * Will also fetch and set generated ID
+     * @param calendar
+     */
     @Override
-    public void addCalendar(Calendar calendar) throws ConnectionError
+    public void addCalendar(Calendar calendar)
     {
         PreparedStatement stmt = null;
         try
         {
-            stmt = DBconnection.prepareStatement("INSERT INTO Calendars(id, name) VALUES (?,?)");
-            stmt.setInt(1, calendar.getCalendarId());
-            stmt.setString(2, calendar.getName());
+            String sql = "INSERT INTO Calendars(name, color) VALUES (?,?)";
+            stmt = DBconnection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, calendar.getName());
+            stmt.setString(2, calendar.getColor().toString());
             stmt.executeUpdate();
+
+            calendar.setID(findAutoNumber(stmt));
         }
         catch (SQLException e)
         {
             LOGGER.warning("SQLError while adding calendar with id = " + calendar.getCalendarId() + " and name = " + calendar.getName());
             e.printStackTrace();
         }
+    }
+
+    /**
+     * function to insert a Task into DB
+     * @param task
+     */
+    public void addTask(Task task) {
+
     }
 
     @Override
@@ -240,6 +256,12 @@ public class DatabaseService implements DataService
             LOGGER.warning("SQLError while removing a calendar with id = " + calendar.getCalendarId() + " and name " + calendar.getName());
             e.printStackTrace();
         }
+    }
+
+    private int findAutoNumber(Statement statement) throws SQLException {
+        ResultSet result = statement.getGeneratedKeys();
+        result.next();
+        return result.getInt(1);
     }
 
     private void prepareDatabase()

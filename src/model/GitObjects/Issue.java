@@ -15,6 +15,9 @@ public final class Issue extends BaseIssue {
         this.difficulty = difficulty;
         finished = false;
     }
+    public Issue(String name, String description) {
+        this(name, description, (byte)5, (short)50);
+    }
 
     public byte getPriority() {
         return priority;
