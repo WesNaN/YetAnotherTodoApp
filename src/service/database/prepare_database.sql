@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS Projects;
 DROP TABLE IF EXISTS Calendars;
 DROP TABLE IF EXISTS LastEdits;
 
+
 CREATE TABLE Calendars
 (
   id    INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
@@ -44,6 +45,9 @@ CREATE TABLE LastEdits
   task_id  INT                NOT NULL REFERENCES Tasks (id),
   reminder TIMESTAMP
 );
+
+
+
 
 
 

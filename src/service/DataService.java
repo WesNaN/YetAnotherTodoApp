@@ -15,7 +15,7 @@ public interface DataService
       * @param task is an instance of {@link model.Task}
       * @throws ConnectionError
       */
-     void addTask(Task task, Calendar calendar, Project project) throws ConnectionError;
+     void addTask(Task task, Calendar calendar) throws ConnectionError;
 
      /**
       *
@@ -31,7 +31,7 @@ public interface DataService
       * @param task is an instance of {@link model.Task}
       * @throws ConnectionError
       */
-     void updateTask(Task task, Calendar calendar, Project project) throws ConnectionError;
+     void updateTask(Task task, Calendar calendar) throws ConnectionError;
 
      /**
       *
@@ -56,10 +56,9 @@ public interface DataService
 
      /**
       *
-      * @param label is an instance of {@link model.Label}
       * @throws ConnectionError
       */
-     void removeLabel(Task task, Label label) throws ConnectionError;
+     void removeLabel(Task task) throws ConnectionError;
 
      /**
       *

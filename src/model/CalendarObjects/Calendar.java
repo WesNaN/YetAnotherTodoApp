@@ -31,6 +31,11 @@ public final class Calendar {
         calendarId = id;
     }
 
+    public void addTask(Task task)
+    {
+        tasks.add(task);
+    }
+
     public String getName()
     {
         return name;

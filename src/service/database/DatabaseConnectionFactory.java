@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class DatabaseConnectionFactory
 {
     /**
-     * This class handles database connection.
+     * This class handles database DBConnection.
      */
 
     public static final DatabaseConnectionFactory INSTANCE = new DatabaseConnectionFactory();
@@ -35,7 +35,7 @@ public class DatabaseConnectionFactory
         }
         catch (SQLException e)
         {
-            LOGGER.warning("Cannot establish connection!");
+            LOGGER.warning("Cannot establish DBConnection!");
             throw new ConnectionError(null, e);
         }
 

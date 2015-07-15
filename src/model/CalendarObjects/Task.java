@@ -19,7 +19,7 @@ public final class Task { //todo change name to event?
     private LocalDateTime due;
     private LocalDateTime lastEdit;
     private int priority;
-    private final int ownerId; //id to the calendar that owns this task
+    private final int ownerId; //id to the calendar that owns this task TODO we should make some user class
 
     /* All variables are defined in the Constructor.
        All variables must be defined however if there is no
@@ -113,5 +113,10 @@ public final class Task { //todo change name to event?
      */
     public boolean isOverdue() {
         return LocalDateTime.now().isAfter(due);
+    }
+
+    public void setTaskId(int taskId)
+    {
+        this.taskId = taskId;
     }
 }
