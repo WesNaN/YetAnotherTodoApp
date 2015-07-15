@@ -16,8 +16,32 @@ public final class Repository extends BaseIssue {
     private LocalDate projectStart;
     private LocalDate projectEnd;
 
+    /**
+     * this constructor is for new objects that dont have their id given by DB yet
+     * @param name
+     * @param description
+     * @param color
+     * @param projectStart
+     * @param projectEnd
+     */
     public Repository(String name, String description, Color color, LocalDate projectStart, LocalDate projectEnd) {
         super(name, description);
+        this.color = color;
+        this.projectStart = projectStart;
+        this.projectEnd = projectEnd;
+    }
+
+    /**
+     * This constructor is used when fetching object from DB
+     * @param id
+     * @param name
+     * @param description
+     * @param color
+     * @param projectStart
+     * @param projectEnd
+     */
+    public Repository(int id, String name, String description, Color color, LocalDate projectStart, LocalDate projectEnd) {
+        super(id, name, description);
         this.color = color;
         this.projectStart = projectStart;
         this.projectEnd = projectEnd;

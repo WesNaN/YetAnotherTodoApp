@@ -3,11 +3,11 @@
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS repository (
   id          INT          NOT NULL AUTO_INCREMENT,
+  name        VARCHAR(45)  NOT NULL ,
+  description VARCHAR(500) NOT NULL ,
   color       VARCHAR(10)  NOT NULL,
   start       DATE         NOT NULL,
   end         DATE         NULL,
-  name        VARCHAR(45)  NULL,
-  description VARCHAR(500) NULL,
   PRIMARY KEY (id)
 );
 

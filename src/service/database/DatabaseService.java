@@ -1,7 +1,9 @@
 package service.database;
 
+import javafx.scene.paint.Color;
 import model.CalendarObjects.Calendar;
 import model.CalendarObjects.Task;
+import model.GitObjects.Repository;
 import model.Label;
 import model.Project;
 import org.h2.tools.RunScript;
@@ -12,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -302,5 +306,49 @@ public class DatabaseService implements DataService
             e.printStackTrace();
         }
         return false;
+    }
+
+    public Repository addRepository(Repository repository) {
+        try {
+            String sql = "INSERT INTO repository(name, description, color, start, end) VALUES (?,?,?,?,?)";
+            PreparedStatement statement = DBConnection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, repository.getName());
+            statement.setString(2, repository.getDescription());
+            statement.setString(3, repository.getColor().toString());
+            statement.setDate(4, Date.valueOf(repository.getProjectStart()));
+            if (repository.getProjectEnd() == null)
+                statement.setDate(5, null);
+            else
+                statement.setDate(5, Date.valueOf(repository.getProjectEnd()));
+            statement.execute();
+
+            repository = findRepository(findAutoNumber(statement));
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, "could not insert repository into DB");
+        }
+        return repository;
+    }
+
+    public Repository findRepository(int id) {
+        Repository repository = null;
+        try {
+            String sql = "SELECT * FROM repository WHERE id = " + id;
+            Statement statement = DBConnection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            result.next();
+
+            int resultId = result.getInt("id");
+            String name = result.getString("name");
+            String description= result.getString("description");
+            String colorString = result.getString("color");
+            Color color = Color.web(colorString);
+            LocalDate projectStart = result.getDate("start").toLocalDate();
+            LocalDate projectEnd = result.getDate("end").toLocalDate(); //todo: if null then ?
+
+           repository = new Repository(resultId, name, description, color, projectStart, projectEnd);
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, "could not get repository from DB");
+        }
+        return repository;
     }
 }

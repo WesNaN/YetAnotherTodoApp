@@ -10,7 +10,24 @@ abstract class BaseIssue {
     private String description;
     short DBMaxDescriptionlength = 500; //todo: get from db
 
-    public BaseIssue(String name, String description) {
+    /**
+     * this constructor is for new objects that dont have their id given by DB yet
+     * @param name
+     * @param description
+     */
+    protected BaseIssue(String name, String description) {
+        this.name = name;
+        setDescription(description);
+    }
+
+    /**
+     * This constructor is used when fetching object from DB
+     * @param id
+     * @param name
+     * @param description
+     */
+    protected BaseIssue(int id, String name, String description) {
+        this.id = id;
         this.name = name;
         setDescription(description);
     }
@@ -18,7 +35,8 @@ abstract class BaseIssue {
     public int getId() {
         return id;
     }
-    public void setId(int id) {
+    @Deprecated
+    void setId(int id) {
         if (id != 0)
             throw new IllegalAccessError("you can only set id once!");
         this.id = id;

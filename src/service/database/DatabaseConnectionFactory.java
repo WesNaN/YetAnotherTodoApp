@@ -13,12 +13,9 @@ public class DatabaseConnectionFactory
      */
 
     public static final DatabaseConnectionFactory INSTANCE = new DatabaseConnectionFactory();
-    private static final Logger LOGGER = Logger.getLogger(
-            Thread.currentThread().getStackTrace()[0].getClassName());
+    private static final Logger LOGGER = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
 
-    private DatabaseConnectionFactory()
-    {
-    }
+    private DatabaseConnectionFactory() {}
 
     public static Connection getConnection(String databaseName, String username, String password) throws ConnectionError
     {
