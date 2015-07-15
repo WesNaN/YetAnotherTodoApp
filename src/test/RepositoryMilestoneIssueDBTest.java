@@ -10,11 +10,10 @@ import service.database.DatabaseConnectionFactory;
 import service.database.DatabaseService;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Tests for GitObjects
@@ -25,10 +24,28 @@ public class RepositoryMilestoneIssueDBTest {
     Connection DBconnection;
     DatabaseService databaseService;
 
+    /**
+     * @BeforeClass needs methods to be static. we cant oblige
+     * the if statement works around this fact
+     * @throws Exception
+     */
     @Before
-    public void setUp() throws Exception {
-        DBconnection = DatabaseConnectionFactory.getConnection("test", "sa", "sa");
-        databaseService = new DatabaseService(DBconnection);
+    public void setUp() throws Exception {         
+        if (DBconnection == null || !DBconnection.isClosed()) {
+            DBconnection = DatabaseConnectionFactory.getConnection("test", "sa", "sa");
+            databaseService = new DatabaseService(DBconnection);
+        }
+    }
+
+    /**
+     * @AfterClass notation needs all methods to be static. We cant oblige to this
+     * To include this method into the last test is a clunky workaround
+     * IMPORTANT have last test call this method
+     * @throws SQLException
+     */
+    private void tearDown() throws SQLException {
+        databaseService.wipeAndResetDB();
+        DBconnection.close();
     }
 
     /**
@@ -64,5 +81,11 @@ public class RepositoryMilestoneIssueDBTest {
         repository = databaseService.addRepository(repository);
         assertNotEquals(0, repository.getId());
         assertEquals(Color.ALICEBLUE, repository.getColor());
+
+        try {
+            tearDown();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

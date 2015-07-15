@@ -291,6 +291,14 @@ public class DatabaseService implements DataService
         }
     }
 
+    /**
+     * This method will wipe all data from DB
+     */
+    public  void wipeAndResetDB() {
+        runScript("DropTables.sql");
+        prepareDatabase();
+    }
+
     private boolean isDatabasePresent()
     {
         PreparedStatement stmt = null;

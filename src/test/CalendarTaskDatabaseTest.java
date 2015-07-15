@@ -10,6 +10,7 @@ import service.database.DatabaseConnectionFactory;
 import service.database.DatabaseService;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -26,10 +27,28 @@ public class CalendarTaskDatabaseTest {
     Connection DBconnection;
     DatabaseService databaseService;
 
+    /**
+     * @BeforeClass needs methods to be static. we cant oblige
+     * the if statement works around this fact
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
-        DBconnection = DatabaseConnectionFactory.getConnection("test", "sa", "sa");
-        databaseService = new DatabaseService(DBconnection);
+        if (DBconnection == null || !DBconnection.isClosed()) {
+            DBconnection = DatabaseConnectionFactory.getConnection("test", "sa", "sa");
+            databaseService = new DatabaseService(DBconnection);
+        }
+    }
+
+    /**
+     * @AfterClass notation needs all methods to be static. We cant oblige to this
+     * To include this method into the last test is a clunky workaround
+     * IMPORTANT have last test call this method
+     * @throws SQLException
+     */
+    private void tearDown() throws SQLException {
+        databaseService.wipeAndResetDB();
+        DBconnection.close();
     }
 
     /**
@@ -80,8 +99,12 @@ public class CalendarTaskDatabaseTest {
         assertEquals(calendar.getColor(), Color.ALICEBLUE);
 
         databaseService.addTask(task1);
+
+        try {
+            tearDown();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-
 
 }
