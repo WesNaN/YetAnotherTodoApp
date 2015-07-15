@@ -230,8 +230,19 @@ public class DatabaseService implements DataService
     @Override
     public void removeCalendar(Calendar calendar) throws ConnectionError
     {
-        // FIXME Does not work, should somehow remove all Tasks associated with this calendar or something like this
         PreparedStatement stmt = null;
+
+        try
+        {
+            stmt = DBConnection.prepareStatement("DELETE FROM Tasks WHERE calendar_id = ?");
+            stmt.setInt(1, calendar.getCalendarId());
+            stmt.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            LOGGER.warning("SQLError while removing tasks that belong to calendar with id = " + calendar.getCalendarId());
+            e.printStackTrace();
+        }
 
         try
         {

@@ -44,6 +44,7 @@ public class DatabaseServiceTest
         service.addLabel(task1, new Label("Label3"));
 
 
+        service.removeCalendar(calendar);
 
 
 
