@@ -6,6 +6,7 @@ import model.GitObjects.Milestone;
 import model.GitObjects.Repository;
 import org.junit.Before;
 import org.junit.Test;
+import service.ConnectionError;
 import service.database.DatabaseConnectionFactory;
 import service.database.DatabaseService;
 
@@ -34,7 +35,7 @@ public class RepositoryMilestoneIssueDBTest {
     public void setUp() throws Exception {
         if (DBconnection == null || !DBconnection.isClosed()) {
             DBconnection = DatabaseConnectionFactory.getConnection();
-            databaseService = new DatabaseService(DBconnection);
+            databaseService = new DatabaseService();
             repository = new Repository("name", "description", Color.ALICEBLUE, LocalDate.now(), LocalDate.now().plusDays(3));
             repository = databaseService.addRepository(repository);
         }
@@ -46,7 +47,7 @@ public class RepositoryMilestoneIssueDBTest {
      * IMPORTANT have last test call this method
      * @throws SQLException
      */
-    private void tearDown() throws SQLException {
+    private void tearDown() throws SQLException, ConnectionError {
         databaseService.wipeAndResetDB();
         DBconnection.close();
     }
@@ -108,7 +109,7 @@ public class RepositoryMilestoneIssueDBTest {
     }
 
     @Test
-    public void addingIssueToDB() {
+    public void addingIssueToDB() throws ConnectionError {
         Issue issue = new Issue(repository, "name", "description", (byte)1, (short)20);
         Issue issue1 = new Issue(repository,"name", "description");
 

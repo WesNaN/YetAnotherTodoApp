@@ -26,13 +26,44 @@ public class DatabaseService implements DataService {
     Connection DBConnection = null;
     private static final Logger LOGGER = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
 
-    public DatabaseService(Connection DBConnection) throws ConnectionError {
-        this.DBConnection = DBConnection;
-        prepareDatabase(); //todo: only if database is not present or new user\pass
+    public DatabaseService() throws ConnectionError {
+        prepareDatabase();
+    }
+
+    /**
+     * Function to open a connection to DB,
+     * should be called at the beginning of each function
+     */
+    private void openConnection() throws ConnectionError {
+        try {
+            if (DBConnection == null || DBConnection.isClosed())
+                DBConnection = DatabaseConnectionFactory.getConnection();
+        } catch (ConnectionError connectionError) {
+            LOGGER.log(Level.SEVERE,"failed opening DBConnection!");
+            connectionError.printStackTrace();
+            throw connectionError; //todo: think about if we can do without this.
+        } catch (SQLException e) {
+            //this is only for DBConnection.isClosed()
+            LOGGER.log(Level.SEVERE,"failed checking DBConnection!");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Function to closeConnection to DB
+     * should be called at the end of each function
+     */
+    private void closeConnection() {
+        try {
+            DBConnection.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, "Failed closing DBconnection");
+        }
     }
 
     @Override
     public void addTask(Task task, Calendar calendar) throws ConnectionError {
+        openConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -55,11 +86,14 @@ public class DatabaseService implements DataService {
         } catch (SQLException e) {
             LOGGER.warning("SQLError while adding a Task to database!");
             e.printStackTrace();
+        } finally {
+            closeConnection();
         }
     }
 
     @Override
     public void removeTask(Task task) throws ConnectionError {
+        openConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -69,11 +103,14 @@ public class DatabaseService implements DataService {
         } catch (SQLException e) {
             LOGGER.warning("SQLError while adding user with id = " + task.getTaskId());
             e.printStackTrace();
+        } finally {
+            closeConnection();
         }
     }
 
     @Override
     public void updateTask(Task task, Calendar calendar) throws ConnectionError {
+        openConnection();
         PreparedStatement stmt = null;
         try {
             stmt = DBConnection.prepareStatement("UPDATE Tasks " +
@@ -93,6 +130,8 @@ public class DatabaseService implements DataService {
         } catch (SQLException e) {
             LOGGER.warning("SQLError while updating a task with id = " + task.getTaskId() + "and title = " + task.getTaskId());
             e.printStackTrace();
+        } finally {
+            closeConnection();
         }
     }
 
@@ -125,6 +164,7 @@ public class DatabaseService implements DataService {
 
     @Override
     public void addLabel(Task task, Label label) throws ConnectionError {
+        openConnection();
         if (task.getLabel() != null) {
             LOGGER.warning("Task with title = " + task.getTitle() + " and id = " + task.getTaskId() + " already have a label!");
             return;
@@ -142,12 +182,15 @@ public class DatabaseService implements DataService {
         } catch (SQLException e) {
             LOGGER.warning("SQLError while adding label: " + label.getName() + " to task with id = " + task.getTaskId() + " and title = " + task.getTitle());
             e.printStackTrace();
+        } finally {
+            closeConnection();
         }
 
     }
 
     @Override
     public void removeLabel(Task task) throws ConnectionError {
+        openConnection();
         if (task.getLabel() != null) {
             task.setLabel(null);
         }
@@ -163,6 +206,8 @@ public class DatabaseService implements DataService {
             LOGGER.warning("SQLError while removing label from task with id = "
                     + task.getTaskId() + " and name = " + task.getTitle());
             e.printStackTrace();
+        } finally {
+            closeConnection();
         }
     }
 
@@ -173,7 +218,8 @@ public class DatabaseService implements DataService {
      * @param calendar
      */
     @Override
-    public void addCalendar(Calendar calendar) {
+    public void addCalendar(Calendar calendar) throws ConnectionError {
+        openConnection();
         PreparedStatement stmt = null;
         try {
             String sql = "INSERT INTO Calendars(name, color) VALUES (?,?)";
@@ -186,20 +232,14 @@ public class DatabaseService implements DataService {
         } catch (SQLException e) {
             LOGGER.warning("SQLError while adding calendar with id = " + calendar.getCalendarId() + " and name = " + calendar.getName());
             e.printStackTrace();
+        } finally {
+            closeConnection();
         }
-    }
-
-    /**
-     * function to insert a Task into DB
-     *
-     * @param task
-     */
-    public void addTask(Task task) {
-
     }
 
     @Override
     public void removeCalendar(Calendar calendar) throws ConnectionError {
+        openConnection();
         PreparedStatement stmt = null;
 
         try {
@@ -219,6 +259,7 @@ public class DatabaseService implements DataService {
             LOGGER.warning("SQLError while removing a calendar with id = " + calendar.getCalendarId() + " and name " + calendar.getName());
             e.printStackTrace();
         }
+        closeConnection();
     }
 
     private int findAutoNumber(Statement statement) throws SQLException {
@@ -227,9 +268,21 @@ public class DatabaseService implements DataService {
         return result.getInt(1);
     }
 
-    private void prepareDatabase() {
+    /**
+     * This method will wipe all data from DB
+     */
+    public void wipeAndResetDB() throws ConnectionError {
+        openConnection();
+        runScript("DropTables.sql");
+        //prepareDB will close connection
+        prepareDatabase();
+    }
+
+    private void prepareDatabase() throws ConnectionError {
+        openConnection();
         runScript("prepare_database.sql");
         runScript("GitObjects.sql");
+        closeConnection();
     }
 
     private void runScript(String URL) {
@@ -245,14 +298,6 @@ public class DatabaseService implements DataService {
         }
     }
 
-    /**
-     * This method will wipe all data from DB
-     */
-    public void wipeAndResetDB() {
-        runScript("DropTables.sql");
-        prepareDatabase();
-    }
-
     private boolean isDatabasePresent() {
         PreparedStatement stmt = null;
 
@@ -266,7 +311,8 @@ public class DatabaseService implements DataService {
         return false;
     }
 
-    public Repository addRepository(Repository repository) {
+    public Repository addRepository(Repository repository) throws ConnectionError {
+        openConnection();
         try {
             String sql = "INSERT INTO repository(name, description, color, start, end) VALUES (?,?,?,?,?)";
             PreparedStatement statement = DBConnection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -283,12 +329,15 @@ public class DatabaseService implements DataService {
             repository = findRepository(findAutoNumber(statement));
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "could not insert repository into DB");
+        } finally {
+            closeConnection();
         }
         //since we are making a "new" repository, and are not changing the passed reference, we need to return it
         return repository;
     }
 
-    public Repository findRepository(int id) {
+    public Repository findRepository(int id) throws ConnectionError {
+        openConnection();
         Repository repository = null;
         try {
             String sql = "SELECT * FROM repository WHERE id = " + id;
@@ -307,6 +356,8 @@ public class DatabaseService implements DataService {
             repository = new Repository(resultId, name, description, color, projectStart, projectEnd);
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "could not get repository from DB");
+        } finally {
+            closeConnection();
         }
         return repository;
     }
@@ -316,7 +367,8 @@ public class DatabaseService implements DataService {
      * @param issue
      * @return issue
      */
-    public Issue addIssue(Issue issue) {
+    public Issue addIssue(Issue issue) throws ConnectionError {
+        openConnection();
         try {
             String sql = "INSERT INTO issue(name, description, priority, difficulty, finished, ownerid) VALUES (?,?,?,?,?,?)";
             PreparedStatement statement = DBConnection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -332,12 +384,15 @@ public class DatabaseService implements DataService {
             issue = findIssue(findAutoNumber(statement));
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "could not insert repository into DB");
+        } finally {
+            closeConnection();
         }
         //since we are making a "new" issue, and are not changing the passed reference, we need to return it
         return issue;
     }
 
-    public Issue findIssue(int id) {
+    public Issue findIssue(int id) throws ConnectionError {
+        openConnection();
         Issue issue = null;
         try {
             String sql = "SELECT * FROM issue WHERE id = " + id;
@@ -356,6 +411,8 @@ public class DatabaseService implements DataService {
             issue = new Issue(resultId, ownerID, name, description, priority, difficulty, finished);
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "could not get repository from DB");
+        } finally {
+            closeConnection();
         }
         return issue;
     }

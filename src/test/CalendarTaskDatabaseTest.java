@@ -6,6 +6,7 @@ import model.CalendarObjects.Task;
 import model.Label;
 import org.junit.Before;
 import org.junit.Test;
+import service.ConnectionError;
 import service.database.DatabaseConnectionFactory;
 import service.database.DatabaseService;
 
@@ -36,7 +37,7 @@ public class CalendarTaskDatabaseTest {
     public void setUp() throws Exception {
         if (DBconnection == null || !DBconnection.isClosed()) {
             DBconnection = DatabaseConnectionFactory.getConnection();
-            databaseService = new DatabaseService(DBconnection);
+            databaseService = new DatabaseService();
         }
     }
 
@@ -46,7 +47,7 @@ public class CalendarTaskDatabaseTest {
      * IMPORTANT have last test call this method
      * @throws SQLException
      */
-    private void tearDown() throws SQLException {
+    private void tearDown() throws SQLException, ConnectionError {
         databaseService.wipeAndResetDB();
         DBconnection.close();
     }
@@ -64,7 +65,7 @@ public class CalendarTaskDatabaseTest {
      * testing addCalendar function, checks if function retrieves and sets an id from DB
      */
     @Test
-    public void addingCalendar() {
+    public void addingCalendar() throws ConnectionError {
         Calendar calendar = new Calendar("testCaledar", Color.ALICEBLUE);
         databaseService.addCalendar(calendar);
         assertThat(calendar.getCalendarId(), not(0));
@@ -76,7 +77,7 @@ public class CalendarTaskDatabaseTest {
      * @throws IllegalAccessError
      */
     @Test(expected = IllegalAccessError.class)
-    public void calendarIdwhenalreadyGenerated() throws IllegalAccessError {
+    public void calendarIdwhenalreadyGenerated() throws IllegalAccessError, ConnectionError {
         Calendar calendar = new Calendar("testCaledar");
         databaseService.addCalendar(calendar);
         calendar.setID(3);
@@ -98,12 +99,14 @@ public class CalendarTaskDatabaseTest {
         assertEquals(task2.getDue(), due);
         assertEquals(calendar.getColor(), Color.ALICEBLUE);
 
-        databaseService.addTask(task1);
+        //databaseService.addTask(task1); todo: write method
 
         try {
             tearDown();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ConnectionError connectionError) {
+            connectionError.printStackTrace();
         }
     }
 
