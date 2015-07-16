@@ -3,6 +3,7 @@ package service.database;
 import javafx.scene.paint.Color;
 import model.CalendarObjects.Calendar;
 import model.CalendarObjects.Task;
+import model.GitObjects.Issue;
 import model.GitObjects.Repository;
 import model.Label;
 import model.Project;
@@ -21,24 +22,20 @@ import java.util.logging.Logger;
 /**
  * This class
  */
-public class DatabaseService implements DataService
-{
+public class DatabaseService implements DataService {
     Connection DBConnection = null;
     private static final Logger LOGGER = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
 
-    public DatabaseService(Connection DBConnection) throws ConnectionError
-    {
+    public DatabaseService(Connection DBConnection) throws ConnectionError {
         this.DBConnection = DBConnection;
         prepareDatabase(); //todo: only if database is not present or new user\pass
     }
 
     @Override
-    public void addTask(Task task, Calendar calendar) throws ConnectionError
-    {
+    public void addTask(Task task, Calendar calendar) throws ConnectionError {
         PreparedStatement stmt = null;
 
-        try
-        {
+        try {
             stmt = DBConnection.prepareStatement("INSERT INTO Tasks(id, title, description, location, label, due, lastedit, priority, calendar_id) " +
                     "VALUES (?,?,?,?,?,?,?,?,?);");
 
@@ -55,38 +52,30 @@ public class DatabaseService implements DataService
 
             task.setTaskId(findAutoNumber(stmt));
 
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             LOGGER.warning("SQLError while adding a Task to database!");
             e.printStackTrace();
         }
     }
 
     @Override
-    public void removeTask(Task task) throws ConnectionError
-    {
+    public void removeTask(Task task) throws ConnectionError {
         PreparedStatement stmt = null;
 
-        try
-        {
+        try {
             stmt = DBConnection.prepareStatement("DELETE FROM Tasks WHERE id = ?");
             stmt.setInt(1, task.getTaskId());
             stmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             LOGGER.warning("SQLError while adding user with id = " + task.getTaskId());
             e.printStackTrace();
         }
     }
 
     @Override
-    public void updateTask(Task task, Calendar calendar) throws ConnectionError
-    {
+    public void updateTask(Task task, Calendar calendar) throws ConnectionError {
         PreparedStatement stmt = null;
-        try
-        {
+        try {
             stmt = DBConnection.prepareStatement("UPDATE Tasks " +
                     "SET title = ?, description = ?, location = ?, label = ?, due = ?, lastedit = ?,priority = ?, calendar_id = ?" +
                     "WHERE id = ?");
@@ -101,54 +90,42 @@ public class DatabaseService implements DataService
             stmt.setInt(8, calendar.getCalendarId());
             stmt.setInt(9, task.getTaskId());
             stmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             LOGGER.warning("SQLError while updating a task with id = " + task.getTaskId() + "and title = " + task.getTaskId());
             e.printStackTrace();
         }
     }
 
     @Override
-    public void addProject(Project project) throws ConnectionError
-    {
+    public void addProject(Project project) throws ConnectionError {
         PreparedStatement stmt = null;
-        try
-        {
+        try {
             stmt = DBConnection.prepareStatement("INSERT INTO Projects(id, name) VALUES (?,?)");
             stmt.setInt(1, project.getProjectId());
             stmt.setString(2, project.getName());
             stmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void removeProject(Project project) throws ConnectionError
-    {
+    public void removeProject(Project project) throws ConnectionError {
         PreparedStatement stmt = null;
 
-        try
-        {
+        try {
             stmt = DBConnection.prepareStatement("DELETE FROM Projects WHERE id = ?");
             stmt.setInt(1, project.getProjectId());
             stmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             LOGGER.warning("SQLError while removing Project with id = " + project.getProjectId() + "and name = " + project.getName());
             e.printStackTrace();
         }
     }
 
     @Override
-    public void addLabel(Task task, Label label) throws ConnectionError
-    {
-        if (task.getLabel() != null)
-        {
+    public void addLabel(Task task, Label label) throws ConnectionError {
+        if (task.getLabel() != null) {
             LOGGER.warning("Task with title = " + task.getTitle() + " and id = " + task.getTaskId() + " already have a label!");
             return;
         }
@@ -157,15 +134,12 @@ public class DatabaseService implements DataService
 
         PreparedStatement stmt = null;
 
-        try
-        {
+        try {
             stmt = DBConnection.prepareStatement("UPDATE Tasks SET label = ? WHERE id = ?");
             stmt.setString(1, label.getName());
             stmt.setInt(2, task.getTaskId());
             stmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             LOGGER.warning("SQLError while adding label: " + label.getName() + " to task with id = " + task.getTaskId() + " and title = " + task.getTitle());
             e.printStackTrace();
         }
@@ -173,24 +147,19 @@ public class DatabaseService implements DataService
     }
 
     @Override
-    public void removeLabel(Task task) throws ConnectionError
-    {
-        if (task.getLabel() != null)
-        {
+    public void removeLabel(Task task) throws ConnectionError {
+        if (task.getLabel() != null) {
             task.setLabel(null);
         }
 
         PreparedStatement stmt = null;
 
-        try
-        {
+        try {
             stmt = DBConnection.prepareStatement("UPDATE Tasks SET label = ? WHERE id = ?");
             stmt.setNull(1, Types.VARCHAR);
             stmt.setInt(2, task.getTaskId());
             stmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             LOGGER.warning("SQLError while removing label from task with id = "
                     + task.getTaskId() + " and name = " + task.getTitle());
             e.printStackTrace();
@@ -200,14 +169,13 @@ public class DatabaseService implements DataService
     /**
      * function to insert new Calendarobject into DB.
      * Will also fetch and set generated ID
+     *
      * @param calendar
      */
     @Override
-    public void addCalendar(Calendar calendar)
-    {
+    public void addCalendar(Calendar calendar) {
         PreparedStatement stmt = null;
-        try
-        {
+        try {
             String sql = "INSERT INTO Calendars(name, color) VALUES (?,?)";
             stmt = DBConnection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, calendar.getName());
@@ -215,9 +183,7 @@ public class DatabaseService implements DataService
             stmt.executeUpdate();
 
             calendar.setID(findAutoNumber(stmt));
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             LOGGER.warning("SQLError while adding calendar with id = " + calendar.getCalendarId() + " and name = " + calendar.getName());
             e.printStackTrace();
         }
@@ -225,6 +191,7 @@ public class DatabaseService implements DataService
 
     /**
      * function to insert a Task into DB
+     *
      * @param task
      */
     public void addTask(Task task) {
@@ -232,30 +199,23 @@ public class DatabaseService implements DataService
     }
 
     @Override
-    public void removeCalendar(Calendar calendar) throws ConnectionError
-    {
+    public void removeCalendar(Calendar calendar) throws ConnectionError {
         PreparedStatement stmt = null;
 
-        try
-        {
+        try {
             stmt = DBConnection.prepareStatement("DELETE FROM Tasks WHERE calendar_id = ?");
             stmt.setInt(1, calendar.getCalendarId());
             stmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             LOGGER.warning("SQLError while removing tasks that belong to calendar with id = " + calendar.getCalendarId());
             e.printStackTrace();
         }
 
-        try
-        {
+        try {
             stmt = DBConnection.prepareStatement("DELETE FROM Calendars WHERE id = ?");
             stmt.setInt(1, calendar.getCalendarId());
             stmt.executeUpdate();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             LOGGER.warning("SQLError while removing a calendar with id = " + calendar.getCalendarId() + " and name " + calendar.getName());
             e.printStackTrace();
         }
@@ -267,25 +227,19 @@ public class DatabaseService implements DataService
         return result.getInt(1);
     }
 
-    private void prepareDatabase()
-    {
+    private void prepareDatabase() {
         runScript("prepare_database.sql");
         runScript("GitObjects.sql");
     }
 
     private void runScript(String URL) {
-        try
-        {
+        try {
             URL url = getClass().getResource(URL);
             RunScript.execute(DBConnection, new FileReader(url.getPath()));
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             LOGGER.warning("Error in " + URL + " script, cannot execute it!");
             e.printStackTrace();
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             LOGGER.warning("' " + URL + "' file not found!");
             e.printStackTrace();
         }
@@ -294,23 +248,19 @@ public class DatabaseService implements DataService
     /**
      * This method will wipe all data from DB
      */
-    public  void wipeAndResetDB() {
+    public void wipeAndResetDB() {
         runScript("DropTables.sql");
         prepareDatabase();
     }
 
-    private boolean isDatabasePresent()
-    {
+    private boolean isDatabasePresent() {
         PreparedStatement stmt = null;
 
-        try
-        {
+        try {
             ResultSet rset = DBConnection.getMetaData().getTables(null, null, "", null);
             // TODO check if tables are present
             return true;
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
@@ -334,6 +284,7 @@ public class DatabaseService implements DataService
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "could not insert repository into DB");
         }
+        //since we are making a "new" repository, and are not changing the passed reference, we need to return it
         return repository;
     }
 
@@ -347,16 +298,65 @@ public class DatabaseService implements DataService
 
             int resultId = result.getInt("id");
             String name = result.getString("name");
-            String description= result.getString("description");
+            String description = result.getString("description");
             String colorString = result.getString("color");
             Color color = Color.web(colorString);
             LocalDate projectStart = result.getDate("start").toLocalDate();
             LocalDate projectEnd = result.getDate("end").toLocalDate(); //todo: if null then ?
 
-           repository = new Repository(resultId, name, description, color, projectStart, projectEnd);
+            repository = new Repository(resultId, name, description, color, projectStart, projectEnd);
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "could not get repository from DB");
         }
         return repository;
+    }
+
+    /**
+     * Adds a new issue into DB. queries the db for issue and returns it
+     * @param issue
+     * @return issue
+     */
+    public Issue addIssue(Issue issue) {
+        try {
+            String sql = "INSERT INTO issue(name, description, priority, difficulty, finished, ownerid) VALUES (?,?,?,?,?,?)";
+            PreparedStatement statement = DBConnection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, issue.getName());
+            statement.setString(2, issue.getDescription());
+            statement.setShort(3, issue.getDifficulty());
+            statement.setByte(4, issue.getPriority());
+            statement.setBoolean(5, issue.isFinished());
+            statement.setInt(6, issue.getOwnerId());
+
+            statement.execute();
+
+            issue = findIssue(findAutoNumber(statement));
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, "could not insert repository into DB");
+        }
+        //since we are making a "new" issue, and are not changing the passed reference, we need to return it
+        return issue;
+    }
+
+    public Issue findIssue(int id) {
+        Issue issue = null;
+        try {
+            String sql = "SELECT * FROM issue WHERE id = " + id;
+            Statement statement = DBConnection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            result.next();
+
+            int resultId = result.getInt("id");
+            int ownerID = result.getInt("ownerid");
+            String name = result.getString("name");
+            String description = result.getString("description");
+            byte priority = result.getByte("priority");
+            short difficulty = result.getShort("difficulty");
+            boolean finished = result.getBoolean("finished");
+
+            issue = new Issue(resultId, ownerID, name, description, priority, difficulty, finished);
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, "could not get repository from DB");
+        }
+        return issue;
     }
 }

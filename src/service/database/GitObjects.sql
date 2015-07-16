@@ -3,8 +3,8 @@
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS repository (
   id          INT          NOT NULL AUTO_INCREMENT,
-  name        VARCHAR(45)  NOT NULL ,
-  description VARCHAR(500) NOT NULL ,
+  name        VARCHAR(45)  NOT NULL,
+  description VARCHAR(500) NOT NULL,
   color       VARCHAR(10)  NOT NULL,
   start       DATE         NOT NULL,
   end         DATE         NULL,
@@ -19,10 +19,10 @@ CREATE TABLE IF NOT EXISTS milestone (
   plannedend  DATE         NOT NULL,
   name        VARCHAR(45)  NOT NULL,
   description VARCHAR(500) NULL,
-  ownerid INT NOT NULL ,
+  ownerid     INT          NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT repo
-    FOREIGN KEY (ownerid) REFERENCES repository (id)
+  FOREIGN KEY (ownerid) REFERENCES repository (id)
 );
 
 -- -----------------------------------------------------
@@ -30,14 +30,15 @@ CREATE TABLE IF NOT EXISTS milestone (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS issue (
   id          INT          NOT NULL AUTO_INCREMENT,
-  priority    TINYINT      NULL,
-  finished    BOOLEAN      NULL,
   name        VARCHAR(45)  NOT NULL,
   description VARCHAR(500) NOT NULL,
-  ownerid INT NOT NULL,
+  priority    TINYINT      NULL,
+  difficulty  TINYINT      NULL,
+  finished    BOOLEAN      NULL ,
+  ownerid     INT          NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT connectedrepo
-    FOREIGN KEY (ownerid) REFERENCES repository (id)
+  FOREIGN KEY (ownerid) REFERENCES repository (id)
 );
 
 -- -----------------------------------------------------
@@ -48,7 +49,7 @@ CREATE TABLE IF NOT EXISTS milestoneRegistry (
   issues INT NOT NULL,
   PRIMARY KEY (mile, issues),
   CONSTRAINT mile
-    FOREIGN KEY (mile) REFERENCES milestone (id),
+  FOREIGN KEY (mile) REFERENCES milestone (id),
   CONSTRAINT issues
-    FOREIGN KEY (issues) REFERENCES issue (id),
+  FOREIGN KEY (issues) REFERENCES issue (id),
 );
