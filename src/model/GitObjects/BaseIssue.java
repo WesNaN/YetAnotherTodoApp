@@ -27,6 +27,8 @@ abstract class BaseIssue {
      * @param description
      */
     protected BaseIssue(int id, String name, String description) {
+        if (id < 1)
+            throw new IllegalAccessError("can only use this Constructor when id is given from DB!");
         this.id = id;
         this.name = name;
         setDescription(description);
@@ -34,12 +36,6 @@ abstract class BaseIssue {
 
     public int getId() {
         return id;
-    }
-    @Deprecated
-    void setId(int id) {
-        if (id != 0)
-            throw new IllegalAccessError("you can only set id once!");
-        this.id = id;
     }
 
     public String getName() {

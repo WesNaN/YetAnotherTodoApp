@@ -20,7 +20,11 @@ public final class Milestone extends BaseIssue {
 
     public Milestone(Repository owner, String name, String description, LocalDate plannedFinnish, Issue... assignedIssues) {
         super(name, description);
+
+        if (owner.getId() < 1)
+            throw new IllegalStateException("OwnerId neds to be larger than 0. Do the repository have a id from DB?");
         repositoryid = owner.getId();
+
         if (owner.getProjectEnd() == null || plannedFinnish.isAfter(owner.getProjectEnd()))
             throw new IllegalArgumentException("Projects enddate have to be after milestones Enddate");
         this.plannedFinnish = plannedFinnish;

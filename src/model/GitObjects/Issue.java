@@ -10,18 +10,18 @@ public final class Issue extends BaseIssue {
     private short difficulty; //how much work is required to svolve issue
     private boolean finished;
 
-    public Issue(int ownerId, String name, String description, byte priority, short difficulty) {
+    public Issue(Repository owner, String name, String description, byte priority, short difficulty) {
         super(name, description);
-        if (ownerId < 1)
+        if (owner.getId() < 1)
             throw new IllegalStateException("OwnerId neds to be larger than 0. Do the repository have a id from DB?");
-        this.ownerId = ownerId;
+        this.ownerId = owner.getId();
         Issue(priority, difficulty, false);
     }
 
     /**
      * Constructor when fetching object from DB
      * @param id
-     * @param ownerId
+     * @param owner
      * @param name
      * @param description
      * @param priority
@@ -31,13 +31,13 @@ public final class Issue extends BaseIssue {
     public Issue(int id, int ownerId, String name, String description, byte priority, short difficulty, boolean finished) {
         super(id, name, description);
         if (ownerId < 1)
-            throw new IllegalStateException("OwnerId neds to be larger than 0. Do the repository have a id from DB?");
+            throw new IllegalStateException("OwnerId needs to be larger than 0. Do the repository have a id from DB?");
         this.ownerId = ownerId;
         Issue(priority, difficulty, finished);
     }
 
-    public Issue(int ownerId, String name, String description) {
-        this(ownerId, name, description, (byte)5, (short)50);
+    public Issue(Repository owner, String name, String description) {
+        this(owner, name, description, (byte)5, (short)50);
     }
 
     /**

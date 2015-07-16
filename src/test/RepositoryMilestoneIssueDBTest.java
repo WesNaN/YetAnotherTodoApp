@@ -57,9 +57,9 @@ public class RepositoryMilestoneIssueDBTest {
     @Test
     public void createObjects() {
         assertNotNull(repository);
-        Issue issue = new Issue(repository.getId(), "name", "description");
+        Issue issue = new Issue(repository, "name", "description");
         assertNotNull(issue);
-        Issue issue1 = new Issue(repository.getId(), "name", "description");
+        Issue issue1 = new Issue(repository, "name", "description");
         Milestone milestone = new Milestone(repository, "name", "description", LocalDate.now().plusDays(3), issue, issue1);
         assertEquals(2, milestone.getAssignedIssues().size());
     }
@@ -69,7 +69,7 @@ public class RepositoryMilestoneIssueDBTest {
      */
     @Test(expected=IllegalArgumentException.class)
     public void testMilstoneDateValidation() {
-        Issue issue1 = new Issue(repository.getId(), "name", "description");
+        Issue issue1 = new Issue(repository, "name", "description");
         Milestone milestone = new Milestone(repository, "name", "description", LocalDate.now().plusDays(13), issue1);
     }
 
@@ -87,13 +87,30 @@ public class RepositoryMilestoneIssueDBTest {
     @Test(expected = IllegalStateException.class)
     public void addUninitializedOwner() {
         Repository repository = new Repository("name", "description", Color.ALICEBLUE, LocalDate.now(), LocalDate.now().plusDays(3));
-        Issue issue1 = new Issue(repository.getId(), "name", "description");
+        Issue issue1 = new Issue(repository, "name", "description");
+    }
+
+    /**
+     * adding a owner that has not been given ID from DB will cast exception
+     */
+    @Test(expected = IllegalStateException.class)
+    public void addUninitializedOwnerMile() {
+        Repository repository = new Repository("name", "description", Color.ALICEBLUE, LocalDate.now(), LocalDate.now().plusDays(3));
+        Milestone milestone = new Milestone(repository, "name", "description", LocalDate.now().plusDays(13));
+    }
+
+    /**
+     * using wrong constrructor when not havong an id from DB
+     */
+    @Test(expected = IllegalAccessError.class)
+    public void usingIllegalConstructorIssue() {
+        Issue i = new Issue(0, 1, "name", "description", (byte)49, (short)10, false);
     }
 
     @Test
     public void addingIssueToDB() {
-        Issue issue = new Issue(repository.getId(), "name", "description", (byte)1, (short)20);
-        Issue issue1 = new Issue(repository.getId(),"name", "description");
+        Issue issue = new Issue(repository, "name", "description", (byte)1, (short)20);
+        Issue issue1 = new Issue(repository,"name", "description");
 
         int defaultid = issue.getId();
         issue = databaseService.addIssue(issue);
