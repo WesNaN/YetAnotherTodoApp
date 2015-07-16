@@ -6,18 +6,27 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
+/**
+ * This class handles database DBConnection.
+ */
 public class DatabaseConnectionFactory
 {
-    /**
-     * This class handles database DBConnection.
-     */
-
     public static final DatabaseConnectionFactory INSTANCE = new DatabaseConnectionFactory();
     private static final Logger LOGGER = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
 
+    private static String databaseName = "test";
+    private static String username = "sa";
+    private static String password = "sa";
+
+    public static void setDBlogon(String databaseName, String username, String password) {
+        DatabaseConnectionFactory.databaseName = databaseName;
+        DatabaseConnectionFactory.username = username;
+        DatabaseConnectionFactory.password = password;
+    }
+
     private DatabaseConnectionFactory() {}
 
-    public static Connection getConnection(String databaseName, String username, String password) throws ConnectionError
+    public static Connection getConnection() throws ConnectionError
     {
         Connection connection = null;
         try

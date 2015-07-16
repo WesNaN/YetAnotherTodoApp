@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class
+ * This class handles inserting and retrieveing into DB
  */
 public class DatabaseService implements DataService {
     Connection DBConnection = null;

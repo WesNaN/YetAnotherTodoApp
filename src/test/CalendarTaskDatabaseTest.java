@@ -35,7 +35,7 @@ public class CalendarTaskDatabaseTest {
     @Before
     public void setUp() throws Exception {
         if (DBconnection == null || !DBconnection.isClosed()) {
-            DBconnection = DatabaseConnectionFactory.getConnection("test", "sa", "sa");
+            DBconnection = DatabaseConnectionFactory.getConnection();
             databaseService = new DatabaseService(DBconnection);
         }
     }

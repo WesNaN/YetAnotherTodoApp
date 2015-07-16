@@ -33,7 +33,7 @@ public class RepositoryMilestoneIssueDBTest {
     @Before
     public void setUp() throws Exception {
         if (DBconnection == null || !DBconnection.isClosed()) {
-            DBconnection = DatabaseConnectionFactory.getConnection("test", "sa", "sa");
+            DBconnection = DatabaseConnectionFactory.getConnection();
             databaseService = new DatabaseService(DBconnection);
             repository = new Repository("name", "description", Color.ALICEBLUE, LocalDate.now(), LocalDate.now().plusDays(3));
             repository = databaseService.addRepository(repository);

@@ -16,7 +16,7 @@ public class DatabaseServiceTest
 {
     public static void main(String args[]) throws ConnectionError
     {
-        DatabaseService service = new DatabaseService(DatabaseConnectionFactory.getConnection("test", "sa", "sa"));
+        DatabaseService service = new DatabaseService(DatabaseConnectionFactory.getConnection());
 
 
         List<LocalDateTime> reminders = new ArrayList<>();
