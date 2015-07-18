@@ -46,7 +46,8 @@ public class Window extends Application {
 	StackPane mainpane;
 	Rectangle placeholder1, placeholder2;
 	Pane maintaskspane;
-	Font fontheader, fonttasktitle;
+	Font fontheader, fonttasktitle, fontbutton;
+	Button btnaddtask;
 	Label x [];
 	@Override
 	public void start(Stage primaryStage) {
@@ -56,23 +57,34 @@ public class Window extends Application {
 			primaryStage.setScene(scenemain);
 			primaryStage.setResizable(true);
 			primaryStage.setTitle("YetAnotherTodoApp");
-			primaryStage.setOnCloseRequest(e -> System.exit(0)); //this is necessary otherwise resources remain open after the app is closed
+			primaryStage.setOnCloseRequest(e -> {
+				if (ConfirmationBox.show("Are you sure you want to exit? ", "Exit", "Yes", "No")){
+					System.exit(0);//this is necessary otherwise resources remain open after the app is closed
+				}
+				e.consume();// If consume is not used the task will close whenever the condition is true of false.
+				
+			}); 
 			primaryStage.show();
-
+			primaryStage.setFullScreen(false);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
 	private void loadNodes() {
-		
+		fontheader = new Font("Georgia", 35);
+		fontbutton = new Font("Arial", 15);
 		// left side
 
 		placeholder1 = new Rectangle(300, 200);
 		placeholder2 = new Rectangle(300, 400);
 		placeholder2.setFill(Color.BLUE);
 		
-		leftsidevbox = new VBox(placeholder1, placeholder2);
+		btnaddtask = new Button("Add Task");
+		btnaddtask.setFont(fontbutton);
+		btnaddtask.setOnAction(e-> addTask());
+		
+		leftsidevbox = new VBox(btnaddtask, placeholder2);
 		leftsidevbox.setPadding(new Insets(20));
 
 		// Right Side
@@ -80,7 +92,7 @@ public class Window extends Application {
 	
 		// Top "Tasks" label
 		lbltasksheader = new Label("Tasks");
-		fontheader = new Font("Georgia", 35);
+		
 		lbltasksheader.setFont(fontheader);
 		lbltasksheader.setAlignment(Pos.BASELINE_CENTER);
 		
@@ -111,7 +123,7 @@ public class Window extends Application {
 			x[i].setText("A very big text for a task to make sure it takes at least one line and goes to the end of the window "+i+"\t");
 			x[i].setFont(fonttasktitle);
 			x[i].setWrapText(true); // disables horizontal scroll bar
-			x[i].autosize();
+		
 			x[i].setPadding(new Insets(20, 0, 20, 0)); 
 			tasksvbox.getChildren().add(x[i]);
 			x[i].setOnMouseClicked(e-> handleMouse(e));
@@ -149,23 +161,14 @@ public class Window extends Application {
 		
 	
 	}
-/*
-	private void temphandleMouse(MouseEvent e, int i){ // This is to be removed, only for array testing
-		
-		if (e.getClickCount() == 1) {
-			// DO STUFF FOR 1 CLICK , show description etc
-			
-		} else if (e.getClickCount() == 2) { // Double Click
-			System.out.println("double click");
-			lbltaskstitle.setVisible(false);
-			txttasks.setVisible(true);
-			editingtask = true;
-		}
-		
-		
+
+	private void addTask(){
+		TasksWindow.show();
+		System.out.println("running addtask");
 	}
 	
-	*/
+	
+	
 	
 	private void handleMouse(MouseEvent e) { // handles mouse inputs
 		
@@ -176,7 +179,7 @@ public class Window extends Application {
 				// DO STUFF FOR 1 CLICK , show description etc
 				
 			} else if (e.getClickCount() == 2) { // Double Click
-				System.out.println("double click");
+				
 				lbltaskstitle.setVisible(false);
 				txttasks.setVisible(true);
 				editingtask = true;
