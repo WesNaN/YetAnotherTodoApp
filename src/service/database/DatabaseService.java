@@ -136,6 +136,7 @@ public class DatabaseService implements DataService {
     }
 
     @Override
+    @Deprecated
     public void addProject(Project project) throws ConnectionError {
         PreparedStatement stmt = null;
         try {
@@ -149,6 +150,7 @@ public class DatabaseService implements DataService {
     }
 
     @Override
+    @Deprecated
     public void removeProject(Project project) throws ConnectionError {
         PreparedStatement stmt = null;
 

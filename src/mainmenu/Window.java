@@ -1,5 +1,4 @@
-
-
+package mainmenu;
 
 
 // Lots of placeholder code until I figure out exactly how to do this.

@@ -38,6 +38,7 @@ public interface DataService
       * @param project is an instance of {@link model.Project}
       * @throws ConnectionError
       */
+     @Deprecated
      void addProject(Project project) throws ConnectionError;
 
      /**
@@ -45,6 +46,7 @@ public interface DataService
       * @param project is an instance of {@link model.Project}
       * @throws ConnectionError
       */
+     @Deprecated
      void removeProject(Project project) throws ConnectionError;
 
      /**

@@ -119,4 +119,21 @@ public final class Task { //todo change name to event?
     {
         this.taskId = taskId;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Task{" +
+                "taskId=" + taskId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", location='" + location + '\'' +
+                ", label=" + label +
+                ", reminders=" + reminders +
+                ", due=" + due +
+                ", lastEdit=" + lastEdit +
+                ", priority=" + priority +
+                ", ownerId=" + ownerId +
+                '}';
+    }
 }
