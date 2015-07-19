@@ -26,7 +26,7 @@ public class DatabaseService implements DataService {
     Connection DBConnection = null;
     private static final Logger LOGGER = Logger.getLogger(Thread.currentThread().getStackTrace()[0].getClassName());
 
-    public DatabaseService() throws ConnectionError {
+    public DatabaseService(){
         prepareDatabase();
     }
 
@@ -280,8 +280,16 @@ public class DatabaseService implements DataService {
         prepareDatabase();
     }
 
-    private void prepareDatabase() throws ConnectionError {
-        openConnection();
+    private void prepareDatabase()
+    {
+        try
+        {
+            openConnection();
+        }
+        catch (ConnectionError connectionError)
+        {
+            connectionError.printStackTrace();
+        }
         runScript("prepare_database.sql");
         runScript("GitObjects.sql");
         closeConnection();
@@ -313,6 +321,7 @@ public class DatabaseService implements DataService {
         return false;
     }
 
+    @Override
     public Repository addRepository(Repository repository) throws ConnectionError {
         openConnection();
         try {
@@ -338,6 +347,7 @@ public class DatabaseService implements DataService {
         return repository;
     }
 
+    @Override
     public Repository findRepository(int id) throws ConnectionError {
         openConnection();
         Repository repository = null;
@@ -369,6 +379,7 @@ public class DatabaseService implements DataService {
      * @param issue
      * @return issue
      */
+    @Override
     public Issue addIssue(Issue issue) throws ConnectionError {
         openConnection();
         try {
@@ -393,6 +404,7 @@ public class DatabaseService implements DataService {
         return issue;
     }
 
+    @Override
     public Issue findIssue(int id) throws ConnectionError {
         openConnection();
         Issue issue = null;

@@ -24,14 +24,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import service.DataService;
 
 public class Window extends Application {
 
-	public static void main(String[] args) { // Temporary main file???
-		launch(args);
-
-	}
-	
 	static int WIDTH = 800;
 	static int HEIGHT = 640;
 	boolean editingtask;
@@ -48,6 +44,7 @@ public class Window extends Application {
 	Font fontheader, fonttasktitle, fontbutton;
 	Button btnaddtask;
 	Label x [];
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -136,8 +133,8 @@ public class Window extends Application {
 		
 		
 	    //tasksvbox contains all the tasks in the array
-		
-		
+
+
 		
 		maintasksscrollpane = new ScrollPane();
 		maintasksscrollpane.setVmax(HEIGHT-100);

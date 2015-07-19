@@ -1,5 +1,6 @@
 package mainmenu;
 
+import Preferences.Preferences;
 import com.sun.javafx.geom.Rectangle;
 
 import javafx.geometry.Insets;
@@ -13,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.CalendarObjects.Calendar;
 import model.CalendarObjects.Task;
 
 import java.time.LocalDateTime;

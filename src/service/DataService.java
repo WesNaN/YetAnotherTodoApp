@@ -1,6 +1,8 @@
 package service;
 
 import model.CalendarObjects.Calendar;
+import model.GitObjects.Issue;
+import model.GitObjects.Repository;
 import model.Label;
 import model.Project;
 import model.CalendarObjects.Task;
@@ -76,4 +78,11 @@ public interface DataService
       */
      void removeCalendar(Calendar calendar) throws ConnectionError;
 
+     Repository addRepository(Repository repository) throws ConnectionError;
+
+     Repository findRepository(int id) throws ConnectionError;
+
+     Issue addIssue(Issue issue) throws ConnectionError;
+
+     Issue findIssue(int id) throws ConnectionError;
 }
