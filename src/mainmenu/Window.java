@@ -1,4 +1,5 @@
-package mainmenu;
+
+
 
 
 // Lots of placeholder code until I figure out exactly how to do this.
@@ -32,8 +33,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-<<<<<<< HEAD
-<<<<<<< HEAD
 import javafx.stage.StageStyle;
 
 public class Window extends Application {
@@ -44,18 +43,6 @@ public class Window extends Application {
 	}
 	DatePicker mainwindowcalendar;
 	Alert exitalert;
-=======
-import service.DataService;
-
-public class Window extends Application {
-
->>>>>>> origin/master
-=======
-import service.DataService;
-
-public class Window extends Application {
-
->>>>>>> origin/master
 	static int WIDTH = 800;
 	static int HEIGHT = 640;
 	boolean editingtask;
@@ -72,7 +59,6 @@ public class Window extends Application {
 	Font fontheader, fonttasktitle, fontbutton;
 	Button btnaddtask, btnyes, btnno;
 	Label x [];
-
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -165,8 +151,8 @@ public class Window extends Application {
 		
 		
 	    //tasksvbox contains all the tasks in the array
-
-
+		
+		
 		
 		maintasksscrollpane = new ScrollPane();
 		maintasksscrollpane.setVmax(HEIGHT-100);
