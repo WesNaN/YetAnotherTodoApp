@@ -1,6 +1,8 @@
 package service;
 
 import model.CalendarObjects.Calendar;
+import model.GitObjects.Issue;
+import model.GitObjects.Repository;
 import model.Label;
 import model.Project;
 import model.CalendarObjects.Task;
@@ -15,7 +17,7 @@ public interface DataService
       * @param task is an instance of {@link model.Task}
       * @throws ConnectionError
       */
-     void addTask(Task task, Calendar calendar, Project project) throws ConnectionError;
+     void addTask(Task task, Calendar calendar) throws ConnectionError;
 
      /**
       *
@@ -31,13 +33,14 @@ public interface DataService
       * @param task is an instance of {@link model.Task}
       * @throws ConnectionError
       */
-     void updateTask(Task task) throws ConnectionError;
+     void updateTask(Task task, Calendar calendar) throws ConnectionError;
 
      /**
       *
       * @param project is an instance of {@link model.Project}
       * @throws ConnectionError
       */
+     @Deprecated
      void addProject(Project project) throws ConnectionError;
 
      /**
@@ -45,6 +48,7 @@ public interface DataService
       * @param project is an instance of {@link model.Project}
       * @throws ConnectionError
       */
+     @Deprecated
      void removeProject(Project project) throws ConnectionError;
 
      /**
@@ -52,14 +56,13 @@ public interface DataService
       * @param label is an instance of {@link model.Label}
       * @throws ConnectionError
       */
-     void addLabel(Label label) throws ConnectionError;
+     void addLabel(Task task, Label label) throws ConnectionError;
 
      /**
       *
-      * @param label is an instance of {@link model.Label}
       * @throws ConnectionError
       */
-     void removeLabel(Label label) throws ConnectionError;
+     void removeLabel(Task task) throws ConnectionError;
 
      /**
       *
@@ -75,4 +78,11 @@ public interface DataService
       */
      void removeCalendar(Calendar calendar) throws ConnectionError;
 
+     Repository addRepository(Repository repository) throws ConnectionError;
+
+     Repository findRepository(int id) throws ConnectionError;
+
+     Issue addIssue(Issue issue) throws ConnectionError;
+
+     Issue findIssue(int id) throws ConnectionError;
 }

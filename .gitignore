@@ -4,3 +4,4 @@ out/
 *.jar
 test.db
 H2DB/H2/
+src/mainmenu/ConfirmationBox.java

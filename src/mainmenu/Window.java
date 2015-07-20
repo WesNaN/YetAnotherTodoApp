@@ -1,21 +1,28 @@
-
-
+package mainmenu;
 
 
 // Lots of placeholder code until I figure out exactly how to do this.
 
+
+import java.awt.Dialog;
+import java.time.LocalDate;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -25,6 +32,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+<<<<<<< HEAD
+import javafx.stage.StageStyle;
 
 public class Window extends Application {
 
@@ -32,7 +41,14 @@ public class Window extends Application {
 		launch(args);
 
 	}
-	
+	DatePicker mainwindowcalendar;
+	Alert exitalert;
+=======
+import service.DataService;
+
+public class Window extends Application {
+
+>>>>>>> origin/master
 	static int WIDTH = 800;
 	static int HEIGHT = 640;
 	boolean editingtask;
@@ -47,8 +63,9 @@ public class Window extends Application {
 	Rectangle placeholder1, placeholder2;
 	Pane maintaskspane;
 	Font fontheader, fonttasktitle, fontbutton;
-	Button btnaddtask;
+	Button btnaddtask, btnyes, btnno;
 	Label x [];
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -58,7 +75,7 @@ public class Window extends Application {
 			primaryStage.setResizable(true);
 			primaryStage.setTitle("YetAnotherTodoApp");
 			primaryStage.setOnCloseRequest(e -> {
-				if (ConfirmationBox.show("Are you sure you want to exit? ", "Exit", "Yes", "No")){
+				if (exitAlert()){
 					System.exit(0);//this is necessary otherwise resources remain open after the app is closed
 				}
 				e.consume();// If consume is not used the task will close whenever the condition is true of false.
@@ -76,15 +93,19 @@ public class Window extends Application {
 		fontbutton = new Font("Arial", 15);
 		// left side
 
-		placeholder1 = new Rectangle(300, 200);
-		placeholder2 = new Rectangle(300, 400);
-		placeholder2.setFill(Color.BLUE);
 		
+		mainwindowcalendar = new DatePicker();
+		mainwindowcalendar.setValue(LocalDate.now());
+		mainwindowcalendar.setMinWidth(300);
+		mainwindowcalendar.setShowWeekNumbers(false);
+		mainwindowcalendar.toFront();
+		mainwindowcalendar.show();
+	
 		btnaddtask = new Button("Add Task");
 		btnaddtask.setFont(fontbutton);
 		btnaddtask.setOnAction(e-> addTask());
 		
-		leftsidevbox = new VBox(btnaddtask, placeholder2);
+		leftsidevbox = new VBox(btnaddtask, mainwindowcalendar);
 		leftsidevbox.setPadding(new Insets(20));
 
 		// Right Side
@@ -137,8 +158,8 @@ public class Window extends Application {
 		
 		
 	    //tasksvbox contains all the tasks in the array
-		
-		
+
+
 		
 		maintasksscrollpane = new ScrollPane();
 		maintasksscrollpane.setVmax(HEIGHT-100);
@@ -164,7 +185,6 @@ public class Window extends Application {
 
 	private void addTask(){
 		TasksWindow.show();
-		System.out.println("running addtask");
 	}
 	
 	
@@ -221,5 +241,19 @@ public class Window extends Application {
 
 		});
 	}
-
+	
+	private boolean exitAlert(){
+		exitalert = new Alert(AlertType.CONFIRMATION);
+		exitalert.setTitle("Exit");
+		exitalert.setContentText("Are you sure you want to exit?");
+		exitalert.setHeaderText("");
+		exitalert.initStyle(StageStyle.UTILITY);
+		Optional<ButtonType> result = exitalert.showAndWait();
+		if (result.get() == ButtonType.OK){
+			return true;}
+        if (result.get() == ButtonType.NO){
+		return false;
+        }
+		return false;
+	}
 }
