@@ -1,8 +1,14 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+=======
+package mainmenu;
+
+import Preferences.Preferences;
+>>>>>>> origin/master
 =======
 package mainmenu;
 
@@ -23,14 +29,20 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import javafx.util.Callback;
 =======
+=======
+>>>>>>> origin/master
 import model.CalendarObjects.Calendar;
 import model.CalendarObjects.Task;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
 >>>>>>> origin/master
 
 
@@ -50,6 +62,7 @@ public class TasksWindow {
 	{
 		Stage addtaskscenestage = new Stage();
 		//Left side	
+<<<<<<< HEAD
 <<<<<<< HEAD
 	txttitle = new TextField("Title");
 	txtdescription = new TextArea("Description");
@@ -158,6 +171,8 @@ public class TasksWindow {
 		
 		
 =======
+=======
+>>>>>>> origin/master
 		txttitle = new TextField("Title");
 		txtdescription = new TextArea("Description");
 		txtlocation = new TextField("Location");
@@ -219,6 +234,9 @@ public class TasksWindow {
 		addtaskscenestage.initStyle(StageStyle.UTILITY);
 		addtaskscenestage.showAndWait();
 
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
 >>>>>>> origin/master
 	}
 }

@@ -33,6 +33,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import javafx.stage.StageStyle;
 
 public class Window extends Application {
@@ -43,6 +44,12 @@ public class Window extends Application {
 	}
 	DatePicker mainwindowcalendar;
 	Alert exitalert;
+=======
+import service.DataService;
+
+public class Window extends Application {
+
+>>>>>>> origin/master
 =======
 import service.DataService;
 
